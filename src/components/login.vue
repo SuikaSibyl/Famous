@@ -51,7 +51,7 @@
                     </form>
                     <p class="form-p">
                         没有帐号？
-                        <router-link :to="'/app/register/'" target="_blank"
+                        <router-link :to="'/register/'" target="_blank"
                             >[立即注册]</router-link
                         >
                         {{ this.$store.state.count }}
