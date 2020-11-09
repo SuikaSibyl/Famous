@@ -1,0 +1,60 @@
+.cesium-infoBox-description,
+body,
+html {
+    height: 240px;
+    width: 450px;
+}
+
+.cesium-infoBox-description * {
+    max-width: 100%;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.cesium-infoBox-defaultTable-lighter tr,
+.cesium-infoBox-defaultTable-lighter td {
+    max-width: 100%;
+}
+
+#leftBodyer {
+    width: 160px;
+    /*设定宽度*/
+    text-align: left;
+    /*文字左对齐*/
+    float: left;
+    /*浮动居左*/
+    clear: left;
+    /*不允许左侧存在浮动*/
+    overflow: hidden;
+    /*超出宽度部分隐藏*/
+    background-color: #66cc33;
+}
+
+#mainBodyer {
+    width: 280px;
+    text-align: left;
+    float: right;
+    /*浮动居右*/
+    clear: right;
+    /*不允许右侧存在浮动*/
+    overflow: hidden;
+}
+
+button {
+    width: 200px;
+    padding: 8px;
+    background-color: #428bca;
+    border-color: #357ebd;
+    color: #fff;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    /* future proofing */
+    -khtml-border-radius: 10px;
+    /* for old Konqueror browsers */
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    font-weight: 900;
+    font-size: 125%
+}

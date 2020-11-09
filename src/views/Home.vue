@@ -1,36 +1,31 @@
 <template>
   <div id="container" class="box">
-    <div id="cesiumContainer"></div>
+    <el-container>
+      <el-button @click="jump" style="z-index:100" type="primary" icon="el-icon-edit"></el-button>
+      <el-main>
+        <Cesium></Cesium>
+      </el-main>
+    </el-container>
   </div>
 </template>
- 
+  
 <script>
+import Cesium from  '@/components/Cesium.vue'
+
 export default {
   name: 'Home',
-  mounted(){
-    this.init()
+  components:{
+    Cesium,
   },
-  methods: {
-    init() {
-      let Cesium = this.cesium
-      let viewer = new Cesium.Viewer('cesiumContainer');
-      viewer._cesiumWidget._creditContainer.style.display = "none";// 隐藏版权
+  methods:{
+    jump(){
+    //this.$router.push("/cart")
+    //传递的参数用{{ $route.query.goodsId }}获取
+    this.$router.push({path: '/about'})
+    //this.$router.go(-2)
+    //后退两步
     }
+
   }
 };
 </script>
- 
-<style lang='scss' scoped>
-html,
-body,
-#cesiumContainer {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-.box {
-  height: 100%;
-} 
-</style>
