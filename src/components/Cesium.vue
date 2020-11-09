@@ -1,18 +1,51 @@
 <template>
     <div id="container" class="box">
+        <footer>
+            <el-row type="flex" :gutter="20" style="z-index:50;">
+                <el-col :span="12" :offset="6" style="z-index:50">
+                    <div class="grid-content bg-purple"  style="z-index:50">
+                        <div class="block" style="z-index:100">
+                            <el-slider
+                            :format-tooltip="formatTooltip"
+                            :min = "1900" 
+                            :max = "2020" 
+                            v-model="value"
+                            show-input>
+                            </el-slider>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+        </footer>
         <div id="cesiumContainer" class="fullSize"></div>
     </div>
 </template>
 
 <script>
-import { queryPeople } from "../api/api";
+import { queryPeople, peopleByYear } from "../api/api";
 import store from "../store";
 export default {
     name: "Cesium",
     mounted() {
         this.init();
     },
+    data(){
+        return{
+            value: 0
+        }
+    },
     methods: {
+        formatTooltip(val){
+            peopleByYear({
+                id: parseInt(this.$route.params.id),
+            }).then((response) => {
+                console.log(response.data);
+                response.data.forEach(function(single, index) {
+                   
+                });
+            })
+            return val;  
+        },
         init() {
             var self = this;
 
@@ -222,8 +255,8 @@ export default {
                 };
                 Cesium.knockout.track(viewModel);
 
-                var toolbar = document.getElementById("toolbar");
-                Cesium.knockout.applyBindings(viewModel, toolbar);
+                // var toolbar = document.getElementById("toolbar");
+                // Cesium.knockout.applyBindings(viewModel, toolbar);
 
                 function subscribeParameter(name) {
                     Cesium.knockout
@@ -236,23 +269,20 @@ export default {
                 subscribeParameter("pixelRange");
                 subscribeParameter("minimumClusterSize");
 
-                dataSource.clustering.enabled = checked;
-                customStyle();
-
-                var handler = new Cesium.ScreenSpaceEventHandler(
-                    viewer.scene.canvas
-                );
-                handler.setInputAction(function(movement) {
-                    var pickedLabel = viewer.scene.pick(movement.position);
-                    if (Cesium.defined(pickedLabel)) {
-                        var ids = pickedLabel.id;
-                        if (Array.isArray(ids)) {
-                            for (var i = 0; i < ids.length; ++i) {
-                                ids[i].billboard.color = Cesium.Color.RED;
-                            }
-                        }
-                    }
-                }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+                // var handler = new Cesium.checked(
+                //     viewer.scene.canvas
+                // );
+                // handler.setInputAction(function(movement) {
+                //     var pickedLabel = viewer.scene.pick(movement.position);
+                //     if (Cesium.defined(pickedLabel)) {
+                //         var ids = pickedLabel.id;
+                //         if (Array.isArray(ids)) {
+                //             for (var i = 0; i < ids.length; ++i) {
+                //                 ids[i].billboard.color = Cesium.Color.RED;
+                //             }
+                //         }
+                //     }
+                // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
             });
         },
     },
@@ -273,7 +303,42 @@ body,
     padding: 0;
     overflow: hidden;
 }
+
 .box {
     height: 100%;
+}
+
+.el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+
+
+footer{
+    width: 100%;
+    position: absolute;
+    bottom: 30px
 }
 </style>
