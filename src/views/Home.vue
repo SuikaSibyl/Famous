@@ -20,6 +20,7 @@
             >
 
             <el-button
+                v-if="IsLog"
                 @click="exit"
                 style="z-index:100"
                 type="primary"
@@ -36,6 +37,7 @@
 <script>
 import Cesium from "@/components/Cesium.vue";
 import cookie from "../../static/js/cookie";
+import store from "../store";
 export default {
     name: "Home",
     data() {
@@ -45,9 +47,8 @@ export default {
         Cesium,
     },
     created() {
-        console.log(this.$store.state.userInfo.name);
-        if (this.$store.state.userInfo.name) {
-            this.IsLog = true;
+        if (this.$store.state.userInfo) {
+            if (this.$store.state.userInfo.name) this.IsLog = true;
         }
     },
     methods: {
@@ -64,8 +65,9 @@ export default {
         exit() {
             cookie.delCookie("token");
             cookie.delCookie("name");
+            this.IsLog = false;
             //跳转到登录
-            this.$router.push({ name: "Login" });
+            store.commit("exit");
         },
     },
 };

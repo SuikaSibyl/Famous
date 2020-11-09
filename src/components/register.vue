@@ -111,19 +111,12 @@ export default {
                 })
                 .catch(function(error) {
                     console.log("error", error);
-                    that.error.mobile = error.response.data.username
-                        ? error.response.data.username[0]
+                    that.error.mobile = error.username ? error.username[0] : "";
+                    that.error.password = error.password
+                        ? error.password[0]
                         : "";
-                    that.error.password = error.response.data.password
-                        ? error.response.data.password[0]
-                        : "";
-                    that.error.username = error.response.data.mobile
-                        ? error.response.data.mobile[0]
-                        : "";
-                    that.error.code = error.response.data.code
-                        ? error.response.data.code[0]
-                        : "";
-                    console.log("error", error.response.data);
+                    that.error.username = error.mobile ? error.mobile[0] : "";
+                    that.error.code = error.code ? error.code[0] : "";
                 });
         },
     },

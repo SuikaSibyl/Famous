@@ -100,16 +100,14 @@ export default {
                     this.$router.push({ name: "Home" });
                 })
                 .catch(function(error) {
-                    console.log("error", error);
-                    console.log("error", error.response);
-                    if ("non_field_errors" in error.response.data) {
-                        that.error = error.response.data.non_field_errors[0];
+                    if ("non_field_errors" in error) {
+                        that.error = error.non_field_errors[0];
                     }
-                    if ("username" in error.response.data) {
-                        that.userNameError = error.response.data.username[0];
+                    if ("username" in error) {
+                        that.userNameError = error.username[0];
                     }
-                    if ("password" in error.response.data) {
-                        that.parseWordError = error.response.data.password[0];
+                    if ("password" in error) {
+                        that.parseWordError = error.password[0];
                     }
                 });
         },

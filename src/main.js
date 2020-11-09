@@ -28,22 +28,27 @@ Axios.interceptors.request.use(
 
 Axios.interceptors.response.use(undefined, (error) => {
     let res = error.response;
+    let that = this;
     console.log("res", res);
     switch (res.status) {
         case 401:
             // 返回 401 清除token信息并跳转到登录页面
             // store.commit(types.LOGOUT);
             console.log("未登录");
+            alert("未登录");
+            router.push({ name: "Login" });
             break;
         // router.replace({
         //   path: '/app/login',
         //   query: {redirect: router.currentRoute.fullPath}
         // })
         case 403:
+            alert("您没有该操作权限");
             console.log("您没有该操作权限");
             break;
         // alert('您没有该操作权限');
         case 500:
+            alert("服务器错误");
             console.log("服务器错误");
             break;
         // alert('服务器错误');

@@ -9,4 +9,7 @@ export default {
         };
         console.log(state.userInfo);
     },
+    exit(state) {
+        state.userInfo = null;
+    },
 };
