@@ -1,3 +1,5 @@
+import cookie from "../../static/js/cookie"
+
 export default {
     login(state, userinfo) {
         state.userInfo = userinfo;

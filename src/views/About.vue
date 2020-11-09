@@ -12,8 +12,12 @@
                         </el-image>
                     </div>
                     <h1>Name: {{ name }}</h1>
-                    <h1>ID: {{ id }}</h1>
-                    <h1>This is an about page</h1>
+                    <h3>ID: id:{{ id }}</h3>
+                    <h3>ID: 生日：{{ dateofbirth }}</h3>
+                    <h3>ID: 死亡：{{ dateofdeath }}</h3>
+                    <h3>ID: 出生地：{{ birthplace }}</h3>
+                    <h3>ID: 专业：{{ major }}</h3>
+                    <h3>ID: 性别：{{ gender }}</h3>
                     <div>
                         <el-button
                             v-if="hasFav"
@@ -55,6 +59,11 @@ export default {
         return {
             name: name,
             id: this.$route.params.id,
+            dataofbirth: null,
+            dateofdeath: null,
+            birthplace: null,
+            major: null,
+            gender: null,
             works: [],
             hasFav: false,
             url:
@@ -65,8 +74,13 @@ export default {
         accuratePeople({
             id: parseInt(this.$route.params.id),
         }).then((response) => {
-            this.$data.name = response.data.name;
-            this.$data.url = response.data.headimage;
+            this.$data.name = response.data.name
+            this.$data.url = response.data.headimage
+            this.$data.dataofbirth = response.data.dataofbirth
+            this.$data.dateofdeath = response.data.dateofdeath
+            this.$data.birthplace = response.data.birthplace
+            this.$data.major = response.data.major
+            this.$data.gender = response.data.gender
             if (cookie.getCookie("token")) {
                 getFav(parseInt(this.$route.params.id))
                     .then((response) => {
@@ -82,9 +96,7 @@ export default {
         askworks({
             id: this.$route.params.id,
         }).then((response) => {
-            console.log(response);
             response.data.forEach(function(single, index) {
-                console.log(single.image);
                 that.$data.works.push(single);
             });
         });
