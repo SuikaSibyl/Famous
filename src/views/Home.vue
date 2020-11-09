@@ -1,31 +1,72 @@
 <template>
-  <div id="container" class="box">
-    <el-container>
-      <el-button @click="jump" style="z-index:100" type="primary" icon="el-icon-edit"></el-button>
-      <el-main>
-        <Cesium></Cesium>
-      </el-main>
-    </el-container>
-  </div>
+    <div id="container" class="box">
+        <el-container>
+            <el-button
+                v-if="IsLog"
+                @click="jump"
+                style="z-index:100"
+                type="primary"
+                icon="el-icon-edit"
+                >welcome back! &nbsp;&nbsp;&nbsp;
+                {{ this.$store.state.userInfo.name }}</el-button
+            >
+            <el-button
+                v-else
+                @click="login"
+                style="z-index:100"
+                type="primary"
+                icon="el-icon-edit"
+                >登录</el-button
+            >
+
+            <el-button
+                @click="exit"
+                style="z-index:100"
+                type="primary"
+                icon="el-icon-edit"
+                >登出</el-button
+            >
+            <el-main>
+                <Cesium></Cesium>
+            </el-main>
+        </el-container>
+    </div>
 </template>
-  
+
 <script>
-import Cesium from  '@/components/Cesium.vue'
-
+import Cesium from "@/components/Cesium.vue";
+import cookie from "../../static/js/cookie";
 export default {
-  name: 'Home',
-  components:{
-    Cesium,
-  },
-  methods:{
-    jump(){
-    //this.$router.push("/cart")
-    //传递的参数用{{ $route.query.goodsId }}获取
-    this.$router.push({path: '/about'})
-    //this.$router.go(-2)
-    //后退两步
-    }
-
-  }
+    name: "Home",
+    data() {
+        return { IsLog: false };
+    },
+    components: {
+        Cesium,
+    },
+    created() {
+        console.log(this.$store.state.userInfo.name);
+        if (this.$store.state.userInfo.name) {
+            this.IsLog = true;
+        }
+    },
+    methods: {
+        login() {
+            this.$router.push({ name: "Login" });
+        },
+        jump() {
+            //this.$router.push("/cart")
+            //传递的参数用{{ $route.query.goodsId }}获取
+            this.$router.push({ path: "/about" });
+            //this.$router.go(-2)
+            //后退两步
+        },
+        exit() {
+            cookie.delCookie("token");
+            cookie.delCookie("name");
+            //跳转到登录
+            this.$router.push({ name: "Login" });
+        },
+    },
 };
 </script>

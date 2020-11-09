@@ -1,24 +1,17 @@
+//引入vue
 import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-import Axios from "axios";
+import axios from "axios";
 
-import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
-
-Vue.use(ElementUI);
-Vue.prototype.$axios = Axios;
+//全局状态控制引入
+import store from "../store";
 
 // http request 拦截器
-Axios.interceptors.request.use(
+axios.interceptors.request.use(
     (config) => {
-        console.log("store.state.userInfo.token", store.state.userInfo.token);
         if (store.state.userInfo.token) {
             // 判断是否存在token，如果存在的话，则每个http header都加上token
             config.headers.Authorization = `JWT ${store.state.userInfo.token}`;
         }
-        console.log(config);
         return config;
     },
     (err) => {
@@ -26,42 +19,24 @@ Axios.interceptors.request.use(
     }
 );
 
-Axios.interceptors.response.use(undefined, (error) => {
+// http response 拦截器
+axios.interceptors.response.use(undefined, (error) => {
     let res = error.response;
-    console.log("res", res);
     switch (res.status) {
         case 401:
             // 返回 401 清除token信息并跳转到登录页面
             // store.commit(types.LOGOUT);
             console.log("未登录");
-            break;
         // router.replace({
         //   path: '/app/login',
         //   query: {redirect: router.currentRoute.fullPath}
         // })
         case 403:
             console.log("您没有该操作权限");
-            break;
         // alert('您没有该操作权限');
         case 500:
             console.log("服务器错误");
-            break;
         // alert('服务器错误');
     }
     return Promise.reject(error.response.data); // 返回接口返回的错误信息
 });
-
-Vue.config.productionTip = false;
-
-//引入cesium相关文件
-var cesium = require("cesium/Cesium");
-var widgets = require("cesium/Widgets/widgets.css");
-
-Vue.prototype.cesium = cesium;
-Vue.prototype.widgets = widgets;
-
-new Vue({
-    router,
-    store,
-    render: (h) => h(App),
-}).$mount("#app");

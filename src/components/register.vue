@@ -69,8 +69,9 @@
     </div>
 </template>
 <script>
-import { register } from "../../api/api";
+import { register } from "../api/api";
 import cookie from "../../static/js/cookie";
+import store from "../store";
 export default {
     data() {
         return {
@@ -101,7 +102,7 @@ export default {
                     // 更新store数据
                     if (cookie.getCookie("name") && cookie.getCookie("token")) {
                         store.commit("login", {
-                            account: response.data.username,
+                            name: response.data.username,
                             token: response.data.token,
                         });
                     }
@@ -109,6 +110,7 @@ export default {
                     this.$router.push({ name: "Home" });
                 })
                 .catch(function(error) {
+                    console.log("error", error);
                     that.error.mobile = error.response.data.username
                         ? error.response.data.username[0]
                         : "";

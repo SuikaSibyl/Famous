@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { queryPeople } from "../../api/api";
+import { queryPeople } from "../api/api";
 import store from "../store";
 export default {
     name: "Cesium",

@@ -62,7 +62,7 @@
     </div>
 </template>
 <script>
-import { login } from "../../api/api";
+import { login } from "../api/api";
 import cookie from "../../static/js/cookie.js";
 import store from "../store";
 export default {
@@ -92,7 +92,7 @@ export default {
                     // 更新store数据
                     if (cookie.getCookie("name") && cookie.getCookie("token")) {
                         store.commit("login", {
-                            account: this.userName,
+                            name: this.userName,
                             token: response.data.token,
                         });
                     }
