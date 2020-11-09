@@ -66,7 +66,6 @@ export default {
             cookie.delCookie("token");
             cookie.delCookie("name");
             this.IsLog = false;
-            //跳转到登录
             store.commit("exit");
         },
     },
