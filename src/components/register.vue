@@ -61,7 +61,7 @@
                     </div>
                     <p class="form-p">
                         已有账号？
-                        <router-link :to="'/app/login'">[立即登录]</router-link>
+                        <router-link :to="'/login'">[立即登录]</router-link>
                     </p>
                 </div>
             </div>
