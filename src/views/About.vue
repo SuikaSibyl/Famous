@@ -51,7 +51,16 @@
 </template>
 
 <script>
-import { accuratePeople, askworks, getFav, addFav, delFav } from "../api/api";
+import {
+    accuratePeople,
+    askworks,
+    getFav,
+    addFav,
+    delFav,
+    addFavWork,
+    delFavWork,
+    askIsworkFav,
+} from "../api/api";
 import cookie from "../../static/js/cookie.js";
 export default {
     name: "Home",
@@ -74,13 +83,13 @@ export default {
         accuratePeople({
             id: parseInt(this.$route.params.id),
         }).then((response) => {
-            this.$data.name = response.data.name
-            this.$data.url = response.data.headimage
-            this.$data.dataofbirth = response.data.dataofbirth
-            this.$data.dateofdeath = response.data.dateofdeath
-            this.$data.birthplace = response.data.birthplace
-            this.$data.major = response.data.major
-            this.$data.gender = response.data.gender
+            this.$data.name = response.data.name;
+            this.$data.url = response.data.headimage;
+            this.$data.dataofbirth = response.data.dataofbirth;
+            this.$data.dateofdeath = response.data.dateofdeath;
+            this.$data.birthplace = response.data.birthplace;
+            this.$data.major = response.data.major;
+            this.$data.gender = response.data.gender;
             if (cookie.getCookie("token")) {
                 getFav(parseInt(this.$route.params.id))
                     .then((response) => {
@@ -97,7 +106,19 @@ export default {
             id: this.$route.params.id,
         }).then((response) => {
             response.data.forEach(function(single, index) {
-                that.$data.works.push(single);
+                console.log("single", single);
+                askIsworkFav(single.id)
+                    .then((response) => {
+                        single["isFav"] = true;
+                        that.$data.works.push(single);
+                        console.log("sss", single);
+                    })
+                    .catch(function(error) {
+                        single["isFav"] = false;
+                        that.$data.works.push(single);
+                        console.log("erro", error);
+                        console.log("ssss", single);
+                    });
             });
         });
     },
@@ -118,6 +139,25 @@ export default {
                 .then((response) => {
                     console.log(response.data);
                     this.hasFav = false;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        addCollectWork(workid) {
+            addFavWork({ works: workid })
+                .then((response) => {
+                    console.log(response.data);
+                    alert("已成功加入收藏夹");
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+        deleteCollectWork(workid) {
+            delFavWork(workid)
+                .then((response) => {
+                    console.log(response.data);
                 })
                 .catch(function(error) {
                     console.log(error);

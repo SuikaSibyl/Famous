@@ -5,7 +5,7 @@
                 <div class="grid-content bg-purple" style="z-index:100">
                     <el-button
                         v-if="IsLog"
-                        @click="jump"
+                        @click="jumpToMy"
                         style="z-index:100"
                         type="primary"
                         icon="el-icon-edit"
@@ -61,10 +61,10 @@ export default {
         login() {
             this.$router.push({ name: "Login" });
         },
-        jump() {
+        jumpToMy() {
             //this.$router.push("/cart")
             //传递的参数用{{ $route.query.goodsId }}获取
-            this.$router.push({ path: "/about" });
+            this.$router.push({ name: "userdetail" });
             //this.$router.go(-2)
             //后退两步
         },

@@ -1,7 +1,7 @@
 import Vue from "vue";
 var that = this;
-// let host = "http://127.0.0.1:8000";
-let host = "http://10.110.8.238:10000"
+let host = "http://127.0.0.1:8000";
+// let host = "http://10.110.8.238:10000"
 
 export const queryPeople = (params) => {
     return Vue.prototype.$axios.get(`${host}/peoples/`);
@@ -17,9 +17,7 @@ export const accuratePeople = (params) => {
 
 export const peopleByYear = (params) => {
     if ("id" in params) {
-        return Vue.prototype.$axios.get(
-            `${host}/peoples/?date=` + params.id
-        );
+        return Vue.prototype.$axios.get(`${host}/peoples/?date=` + params.id);
     }
 };
 
@@ -55,5 +53,30 @@ export const addFav = (params) => {
 export const delFav = (peopleId) => {
     return Vue.prototype.$axios.delete(
         `${host}/modifyuserfavs/` + peopleId + "/"
+    );
+};
+
+export const getAllFavPeople = (parmas) => {
+    return Vue.prototype.$axios.get(`${host}/getuserfavs/`, parmas);
+};
+
+export const getAllFavWork = (parmas) => {
+    return Vue.prototype.$axios.get(`${host}/getuserworkfavs/`, parmas);
+};
+
+export const addFavWork = (params) => {
+    return Vue.prototype.$axios.post(`${host}/modifyuserworkfavs/`, params);
+};
+
+//取消收藏
+export const delFavWork = (peopleId) => {
+    return Vue.prototype.$axios.delete(
+        `${host}/modifyuserworkfavs/` + peopleId + "/"
+    );
+};
+
+export const askIsworkFav = (workId) => {
+    return Vue.prototype.$axios.get(
+        `${host}/modifyuserworkfavs/` + workId + "/"
     );
 };

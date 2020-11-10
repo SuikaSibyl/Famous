@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Cesium from "../components/Cesium.vue";
 import login from "../components/login.vue";
 import register from "../components/register.vue";
+import UserDetail from "../views/UserDetail.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -35,6 +36,11 @@ const routes = [
         path: "/register",
         name: "register",
         component: register,
+    },
+    {
+        path: "/UserDetail",
+        name: "userdetail",
+        component: UserDetail,
     },
 ];
 
