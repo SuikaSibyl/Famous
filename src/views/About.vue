@@ -121,80 +121,6 @@
 </template>
 
 <script>
-<<<<<<< Updated upstream
-import { accuratePeople, askworks, getFav, addFav, delFav } from "../api/api";
-import cookie from "../../static/js/cookie.js";
-export default {
-    name: "Home",
-    data() {
-        return {
-            name: name,
-            id: this.$route.params.id,
-            dataofbirth: null,
-            dateofdeath: null,
-            birthplace: null,
-            major: null,
-            gender: null,
-            works: [],
-            hasFav: false,
-            url:
-                "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-        };
-    },
-    created: function() {
-        accuratePeople({
-            id: parseInt(this.$route.params.id),
-        }).then((response) => {
-            this.$data.name = response.data.name
-            this.$data.url = response.data.headimage
-            this.$data.dataofbirth = response.data.dataofbirth
-            this.$data.dateofdeath = response.data.dateofdeath
-            this.$data.birthplace = response.data.birthplace
-            this.$data.major = response.data.major
-            this.$data.gender = response.data.gender
-            if (cookie.getCookie("token")) {
-                getFav(parseInt(this.$route.params.id))
-                    .then((response) => {
-                        this.hasFav = true;
-                    })
-                    .catch(function(error) {
-                        console.log(error.response);
-                    });
-            }
-        });
-
-        var that = this;
-        askworks({
-            id: this.$route.params.id,
-        }).then((response) => {
-            response.data.forEach(function(single, index) {
-                that.$data.works.push(single);
-            });
-        });
-    },
-    methods: {
-        addCollect() {
-            addFav({ famouspeople: this.$route.params.id })
-                .then((response) => {
-                    console.log(response.data);
-                    this.hasFav = true;
-                    alert("已成功加入收藏夹");
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        },
-        deleteCollect() {
-            delFav(this.$route.params.id)
-                .then((response) => {
-                    console.log(response.data);
-                    this.hasFav = false;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        },
-=======
 import {
   accuratePeople,
   askworks,
@@ -324,7 +250,6 @@ export default {
     },
     goBack() {
       this.$router.go(-1)
->>>>>>> Stashed changes
     },
     returnHome() {
       this.$router.push({ name: 'Home' })
