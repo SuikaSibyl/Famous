@@ -1,18 +1,105 @@
 <template>
     <div id="container" class="box">
+        <footer>
+            <el-row type="flex" :gutter="20" style="z-index:50;">
+                <el-col :span="15" :offset="3" style="z-index:50">
+                    <div class="grid-content bg-purple"  style="z-index:50">
+                        <div class="block" style="z-index:100">
+                            <el-slider
+                            :min = "1900" 
+                            :max = "2020" 
+                            v-model="value"
+                            show-input>
+                            </el-slider>
+                        </div>
+                    </div>
+                </el-col>
+                    <el-button type="primary" @click="byYear">按年查询</el-button>
+                <el-col :span="6" style="z-index:50">
+                </el-col>
+            </el-row>
+        </footer>
         <div id="cesiumContainer" class="fullSize"></div>
     </div>
 </template>
 
 <script>
-import { queryPeople } from "../api/api";
+import { queryPeople, peopleByYear } from "../api/api";
 import store from "../store";
 export default {
     name: "Cesium",
     mounted() {
         this.init();
     },
+    data(){
+        return{
+            value: 0,
+            viewer: null,
+        }
+    },
     methods: {
+        byYear(){
+            let Cesium = this.cesium;
+            let viewer = this.$data.viewer
+            viewer.entities.removeAll();
+            let scene = viewer.scene;
+
+            function addBillboard(len, lon, id, name, birthplace, headimage) {
+                viewer.entities.add({
+                    name: name,
+                    position: Cesium.Cartesian3.fromDegrees(len, lon),
+                    billboard: {
+                        image: "/blu-circle.png",
+                        scaleByDistance: new Cesium.NearFarScalar(
+                            1.5e2,
+                            1.0,
+                            1.5e7,
+                            0.4
+                        ),
+                    },
+                    description:
+                        '<div id="leftBodyer">' +
+                        '<img src="' +
+                        headimage +
+                        '"  alt="上海鲜花港 - 郁金香" />' +
+                        "</div>" +
+                        '<div id="mainBodyer">' +
+                        "<h1>" +
+                        name +
+                        "</h1>" +
+                        "<h3>出生地: " +
+                        birthplace +
+                        "</h3>" +
+                        '<div><button tag="routerbutton" class="click-test-button" pid=' +
+                        id +
+                        ">" +
+                        "了解更多</button></div>" +
+                        "</div>",
+                });
+            }
+
+            // ***********************************************************
+            // Add data to the entity
+            // ***********************************************************
+
+            peopleByYear({
+                id: parseInt(this.$data.value),
+            }).then((response) => {
+                console.log(response.data);
+                response.data.forEach(function(single, index) {
+                    if (single.latitude != null && single.longitude != null) {
+                        addBillboard(
+                            single.longitude,
+                            single.latitude,
+                            single.id,
+                            single.name,
+                            single.birthplace,
+                            single.headimage
+                        );
+                    }
+                });
+            });
+        },
         init() {
             var self = this;
 
@@ -20,7 +107,8 @@ export default {
             Cesium.Ion.defaultAccessToken =
                 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3ZDJjNGEzNy02MWY0LTQzNWItYTY1My00OGRiMWYxNmUxYWYiLCJpZCI6MzcxMTEsImlhdCI6MTYwNDU1ODQ0M30.OY4BQrSOy5iz0Rubg3NNfzUXKN1fSHc8_ilgxQQGCwI";
             // var widget = new Cesium.CesiumWidget('cesiumContainer');
-            let viewer = new Cesium.Viewer("cesiumContainer");
+            this.$data.viewer = new Cesium.Viewer("cesiumContainer");
+            let viewer = this.$data.viewer
             let scene = viewer.scene;
             // viewer.scene.globe.enableLighting = true
             viewer._cesiumWidget._creditContainer.style.display = "none"; // 隐藏版权
@@ -222,8 +310,8 @@ export default {
                 };
                 Cesium.knockout.track(viewModel);
 
-                var toolbar = document.getElementById("toolbar");
-                Cesium.knockout.applyBindings(viewModel, toolbar);
+                // var toolbar = document.getElementById("toolbar");
+                // Cesium.knockout.applyBindings(viewModel, toolbar);
 
                 function subscribeParameter(name) {
                     Cesium.knockout
@@ -236,23 +324,20 @@ export default {
                 subscribeParameter("pixelRange");
                 subscribeParameter("minimumClusterSize");
 
-                dataSource.clustering.enabled = checked;
-                customStyle();
-
-                var handler = new Cesium.ScreenSpaceEventHandler(
-                    viewer.scene.canvas
-                );
-                handler.setInputAction(function(movement) {
-                    var pickedLabel = viewer.scene.pick(movement.position);
-                    if (Cesium.defined(pickedLabel)) {
-                        var ids = pickedLabel.id;
-                        if (Array.isArray(ids)) {
-                            for (var i = 0; i < ids.length; ++i) {
-                                ids[i].billboard.color = Cesium.Color.RED;
-                            }
-                        }
-                    }
-                }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+                // var handler = new Cesium.checked(
+                //     viewer.scene.canvas
+                // );
+                // handler.setInputAction(function(movement) {
+                //     var pickedLabel = viewer.scene.pick(movement.position);
+                //     if (Cesium.defined(pickedLabel)) {
+                //         var ids = pickedLabel.id;
+                //         if (Array.isArray(ids)) {
+                //             for (var i = 0; i < ids.length; ++i) {
+                //                 ids[i].billboard.color = Cesium.Color.RED;
+                //             }
+                //         }
+                //     }
+                // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
             });
         },
     },
@@ -273,7 +358,15 @@ body,
     padding: 0;
     overflow: hidden;
 }
+
 .box {
     height: 100%;
+}
+
+
+footer{
+    width: 100%;
+    position: absolute;
+    bottom: 30px
 }
 </style>
