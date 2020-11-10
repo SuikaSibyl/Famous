@@ -80,3 +80,15 @@ export const askIsworkFav = (workId) => {
         `${host}/modifyuserworkfavs/` + workId + "/"
     );
 };
+
+export const searchPeopleName = (params) => {
+    return Vue.prototype.$axios.get(`${host}/peoplename/`, params);
+};
+
+export const searchPeopleMajor = (params) => {
+    return Vue.prototype.$axios.get(`${host}/peoplemajor/`, params);
+};
+
+export const searchWork = (params) => {
+    return Vue.prototype.$axios.get(`${host}/worksearch/`, params);
+};
