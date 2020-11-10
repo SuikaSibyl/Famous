@@ -4,11 +4,8 @@ import Home from "../views/Home.vue";
 import Cesium from "../components/Cesium.vue";
 import login from "../components/login.vue";
 import register from "../components/register.vue";
-<<<<<<< Updated upstream
-=======
 import UserDetail from "../views/UserDetail.vue";
 import filter from "../views/Filter.vue";
->>>>>>> Stashed changes
 Vue.use(VueRouter);
 
 const routes = [{
@@ -40,8 +37,6 @@ const routes = [{
         name: "register",
         component: register,
     },
-<<<<<<< Updated upstream
-=======
     {
         path: "/UserDetail",
         name: "userdetail",
@@ -52,7 +47,6 @@ const routes = [{
         name: "filter",
         component: filter,
     },
->>>>>>> Stashed changes
 ];
 
 const router = new VueRouter({
