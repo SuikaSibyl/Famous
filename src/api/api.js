@@ -1,7 +1,7 @@
 import Vue from "vue";
 var that = this;
 // let host = "http://127.0.0.1:8000";
-let host = "http://10.110.8.238:8000"
+let host = "http://10.110.8.238:10000"
 
 export const queryPeople = (params) => {
     return Vue.prototype.$axios.get(`${host}/peoples/`);
@@ -18,7 +18,7 @@ export const accuratePeople = (params) => {
 export const peopleByYear = (params) => {
     if ("id" in params) {
         return Vue.prototype.$axios.get(
-            `${host}/peoples?date=` + params.id + "/"
+            `${host}/peoples/?date=` + params.id
         );
     }
 };
