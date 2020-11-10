@@ -1,5 +1,11 @@
 # client
 
+## 开发备忘 
+
+* Dark的UI风格
+* 作品显示问题
+* 首页弹窗样式
+
 ## Project setup
 ```
 yarn install
