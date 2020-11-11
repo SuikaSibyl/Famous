@@ -133,8 +133,14 @@ export default {
       console.log('res2', res2)
       that.$data.respic = res2.data.resimage
       that.$data.uploadpic = res2.data.image
-
-      that.$data.dialogVisible = true
+      if(that.$data.IsRes) {
+        that.$data.dialogVisible = true
+      }
+      else {
+        this.$message('AI被您的美颜震惊了，没有匹配成功>_<')
+        that.dialogClose()
+      }
+      
 
       console.log(
         this.$data.IsRes,

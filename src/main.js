@@ -13,12 +13,13 @@ Vue.prototype.$axios = Axios;
 // http request 拦截器
 Axios.interceptors.request.use(
     (config) => {
-        console.log("store.state.userInfo.token", store.state.userInfo.token);
         if (store.state.userInfo.token) {
             // 判断是否存在token，如果存在的话，则每个http header都加上token
             config.headers.Authorization = `JWT ${store.state.userInfo.token}`;
+            config.headers["Access-Control-Allow-Origin"] = "*";
+            config.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
         }
-        console.log(config);
+        console.log("config", config);
         return config;
     },
     (err) => {
@@ -29,29 +30,31 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(undefined, (error) => {
     let res = error.response;
     let that = this;
-    console.log("res", res);
-    switch (res.status) {
-        case 401:
-            // 返回 401 清除token信息并跳转到登录页面
-            // store.commit(types.LOGOUT);
-            console.log("未登录");
-            alert("未登录");
-            router.push({ name: "Login" });
-            break;
-        // router.replace({
-        //   path: '/app/login',
-        //   query: {redirect: router.currentRoute.fullPath}
-        // })
-        case 403:
-            alert("您没有该操作权限");
-            console.log("您没有该操作权限");
-            break;
-        // alert('您没有该操作权限');
-        case 500:
-            alert("服务器错误");
-            console.log("服务器错误");
-            break;
-        // alert('服务器错误');
+    console.log("error", error);
+    if (res) {
+        switch (res.status) {
+            case 401:
+                // 返回 401 清除token信息并跳转到登录页面
+                // store.commit(types.LOGOUT);
+                console.log("未登录");
+                alert("未登录");
+                router.push({ name: "Login" });
+                break;
+                // router.replace({
+                //   path: '/app/login',
+                //   query: {redirect: router.currentRoute.fullPath}
+                // })
+            case 403:
+                alert("您没有该操作权限");
+                console.log("您没有该操作权限");
+                break;
+                // alert('您没有该操作权限');
+            case 500:
+                alert("服务器错误");
+                console.log("服务器错误");
+                break;
+                // alert('服务器错误');
+        }
     }
     return Promise.reject(error.response.data); // 返回接口返回的错误信息
 });

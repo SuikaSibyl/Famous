@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      value: 0,
+      value: 2020,
       viewer: null,
       rotate: true,
       rotateHandler: '',
