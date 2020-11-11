@@ -15,6 +15,12 @@ export const accuratePeople = (params) => {
     }
 };
 
+export const peopleByYear = (params) => {
+    if ("id" in params) {
+        return Vue.prototype.$axios.get(`${host}/peoples/?date=` + params.id);
+    }
+};
+
 export const askworks = (params) => {
     if ("id" in params) {
         console.log(`${host}/works/?author=` + params.id + "/");

@@ -352,4 +352,11 @@ body,
   background-position: center;
   background-size: cover;
 }
+
+
+footer{
+    width: 100%;
+    position: absolute;
+    bottom: 30px
+}
 </style>

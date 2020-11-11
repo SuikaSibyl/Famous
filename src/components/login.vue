@@ -84,7 +84,7 @@ export default {
                 password: this.parseWord,
             })
                 .then((response) => {
-                    console.log(response);
+                    console.log("response", response);
                     //本地存储用户信息
                     cookie.setCookie("name", this.userName, 7);
                     cookie.setCookie("token", response.data.token, 7);
@@ -117,12 +117,12 @@ export default {
     },
     created() {
         // 清除缓存
+        console.log("12");
         cookie.delCookie("token");
         cookie.delCookie("name");
         // 重新触发store
         // 更新store数据
         this.$store.commit("setInfo");
-
     },
 };
 </script>

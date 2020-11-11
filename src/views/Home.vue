@@ -20,7 +20,6 @@
       </el-footer>
     </el-container>
   </el-container>
-
 </template>
 
 <script>

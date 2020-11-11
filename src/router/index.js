@@ -6,6 +6,7 @@ import login from "../components/login.vue";
 import register from "../components/register.vue";
 import UserDetail from "../views/UserDetail.vue";
 import filter from "../views/Filter.vue";
+
 Vue.use(VueRouter);
 
 const routes = [{
