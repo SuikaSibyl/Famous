@@ -1,33 +1,33 @@
 <template>
   <el-container>
-    <el-container style="height: 95vh;">
+    <el-container style="height: 100vh;">
       <el-header class="header"
-                 style="padding: 0 20px 10px 20px;"
-                 height="84px">
+                 style="padding: 0 20px 0px 20px;"
+                 height="40px">
         <div class="row-wrap"
              style="align-items: flex-end;">
           <div class="page-back"
                @click="goBack"><i class="el-icon-back" /><span style="margin: 0 20px 0 10px;">返回</span></div>
-          <div style="font-size: 48px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location"/>文化名人地图</div>
-          <div style="margin-left: 20px;">v1.0.0</div>
-          <div style="font-size: 36px; margin-left: 40px;">人物详情</div>
+          <div style="font-size: 28px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location" />文化名人地图</div>
+          <div style="margin: 0 0 2px 10px;">v1.0.0</div>
+          <div style="font-size: 24px; margin-left: 40px;">人物详情</div>
         </div>
         <div class="row-wrap btn-wrap">
           <el-button type="text"
                      icon="el-icon-s-home"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      @click="returnHome"></el-button>
           <el-button type="text"
                      icon="el-icon-search"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      @click="gotoFilter"></el-button>
           <el-button type="text"
                      icon="el-icon-user-solid"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      @click="gotoUser">{{ this.$store.state.userInfo.name }}</el-button>
           <el-button type="text"
                      icon="el-icon-more"
-                     style="font-size: 36px;"></el-button>
+                     style="font-size: 24px;"></el-button>
         </div>
 
       </el-header>
@@ -45,7 +45,7 @@
               </div>
               <div class="column-wrap margin-bottom">
                 <div class="row-wrap">
-                  <div style="font-size: 48px; font-weight: lighter;">{{ name }}</div>
+                  <div style="font-size: 28px; font-weight: lighter;">{{ name }}</div>
                   <div style="line-height: 40px; color: gray; margin-left: 4px;">({{ gender }})</div>
                 </div>
                 <div>
@@ -83,21 +83,24 @@
           <el-carousel style="height: 100%;"
                        :autoplay="false"
                        trigger="click">
-            <el-carousel-item v-for="item in works"
-                              :key="item">
-              <el-image style="width: 100%; height: 100%; background-color: white;"
+            <el-carousel-item v-for="(item, index) in works"
+                              :key="item.id">
+              
+              <el-image class="elimage" style="width: 100%; height: 100%; background-color: white;"
                         :src="item.image"
+                        :preview-src-list="[item.image]"
                         fit="contain"></el-image>
+              <div class="work-title card">{{ item.title }}</div>
               <div class="work-btn-wrap">
-                <el-button v-if="item.hasFav"
-                           @click="deleteCollectWork(item.id)"
+                <el-button v-if="item.isFav"
+                           @click="deleteCollectWork(item.id, index)"
                            style="z-index:100"
                            type="warning"
                            icon="el-icon-star-on"
                            size="medium"
                            round>取消收藏</el-button>
                 <el-button v-else
-                           @click="addCollectWork(item.id)"
+                           @click="addCollectWork(item.id, index)"
                            style="z-index:100"
                            type="primary"
                            icon="el-icon-star-off"
@@ -110,7 +113,7 @@
       </el-container>
       <el-footer class="footer"
                  height="40px">
-        2020 DAM | Copyright © 沈吕可晟 鲁昊霖 陆子仪 唐敏哲 周宇轩 all right reserved | Powered by 
+        2020 DAM | Copyright © 沈吕可晟 鲁昊霖 陆子仪 唐敏哲 周宇轩 all right reserved | Powered by
         <a href="https://www.djangoproject.com/">Django</a> /
         <a href="https://cn.vuejs.org/">Vue.js</a> /
         <a href="https://element.eleme.cn/#/zh-CN">Element UI</a> /
@@ -190,18 +193,15 @@ export default {
       id: this.$route.params.id,
     }).then((response) => {
       response.data.forEach(function (single, index) {
-        console.log('single', single)
         askIsworkFav(single.id)
           .then((response) => {
             single['isFav'] = true
             that.$data.works.push(single)
-            console.log('sss', single)
           })
           .catch(function (error) {
             single['isFav'] = false
             that.$data.works.push(single)
-            console.log('erro', error)
-            console.log('ssss', single)
+            //console.log('err', error)
           })
       })
     })
@@ -228,21 +228,24 @@ export default {
           console.log(error)
         })
     },
-    addCollectWork(workid) {
+    addCollectWork(workid, itemid) {
       console.log('addcollectwork:', workid)
       addFavWork({ works: workid })
         .then((response) => {
           console.log(response.data)
+          this.$data.works[itemid].isFav = true
           alert('已成功加入收藏夹')
         })
         .catch(function (error) {
           console.log(error)
         })
     },
-    deleteCollectWork(workid) {
+    deleteCollectWork(workid, itemid) {
+      console.log('deletecollectwork:', workid)
       delFavWork(workid)
         .then((response) => {
           console.log(response.data)
+          this.$data.works[itemid].isFav = false
         })
         .catch(function (error) {
           console.log(error)

@@ -1,45 +1,45 @@
 <template>
   <el-container>
-    <el-container style="height: 95vh;">
+    <el-container style="height: 100vh;">
       <el-header class="header"
-                 style="padding: 0 20px 10px 20px;"
-                 height="84px">
+                 style="padding: 0 20px 0px 20px;"
+                 height="40px">
         <div class="row-wrap"
              style="align-items: flex-end;">
           <div class="page-back"
                @click="goBack"><i class="el-icon-back" /><span style="margin: 0 20px 0 10px;">返回</span></div>
-          <div style="font-size: 48px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location"/>文化名人地图</div>
-          <div style="margin-left: 20px;">v1.0.0</div>
-          <div style="font-size: 36px; margin-left: 40px;">搜索</div>
+          <div style="font-size: 28px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location"/>文化名人地图</div>
+          <div style="margin: 0 0 2px 10px;">v1.0.0</div>
+          <div style="font-size: 24px; margin-left: 40px;">搜索</div>
         </div>
         <div class="row-wrap btn-wrap">
           <el-button type="text"
                      icon="el-icon-s-home"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      @click="returnHome"></el-button>
           <el-button type="text"
                      icon="el-icon-search"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      disabled
                      @click="gotoFilter"></el-button>
           <el-button type="text"
                      icon="el-icon-user-solid"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      @click="gotoUser">{{ this.$store.state.userInfo.name }}</el-button>
           <el-button type="text"
                      icon="el-icon-more"
-                     style="font-size: 36px;"></el-button>
+                     style="font-size: 24px;"></el-button>
         </div>
 
       </el-header>
       <el-container>
-        <el-aside width="300px"
+        <el-aside width="250px"
                   class="aside">
           <div style="margin-top: 15px;">
             <el-input placeholder="搜索人物"
                       prefix-icon="el-icon-user"
                       v-model="peoplename"
-                      style="font-size: 18px;"
+                      style="font-size: 14px;"
                       clearable>
               <el-button slot="append"
                          icon="el-icon-search"
@@ -50,7 +50,7 @@
             <el-input placeholder="搜索作品"
                       prefix-icon="el-icon-picture-outline-round"
                       v-model="workname"
-                      style="font-size: 18px;"
+                      style="font-size: 14px;"
                       clearable>
               <el-button slot="append"
                          icon="el-icon-search"
@@ -61,7 +61,7 @@
             <el-input placeholder="搜索专业"
                       prefix-icon="el-icon-collection-tag"
                       v-model="major"
-                      style="font-size: 18px;"
+                      style="font-size: 14px;"
                       clearable>
               <el-button slot="append"
                          icon="el-icon-search"
@@ -83,16 +83,16 @@
 
                 <el-image :src="item.headimage"
                           fit="cover"
-                          style="height: 200px; width: 150px;">
+                          style="height: 160px; width: 120px;">
                   <div slot="error"
                        class="image-slot">
                     <i class="el-icon-picture-outline"></i>
                   </div>
                 </el-image>
                 <div>
-                  <span class="tags">{{ item.major }}</span><span style="font-size: 24px; margin-left: 5px;">{{ item.name }}</span>
+                  <span class="tags" style="margin: auto 0;">{{ item.major }}</span><span style="font-size: 18px; margin-left: 5px;">{{ item.name }}</span>
                 </div>
-                <div style="font-size: 16px; margin-top: 5px;">{{ item.birthplace }}</div>
+                <div style="font-size: 12px; margin-top: 5px;">{{ item.birthplace }}</div>
               </div>
             </div>
           </div>

@@ -1,13 +1,13 @@
 <template>
   <div class="elmain">
-    <div class="slider card">
+    <div class="slider">
       <el-slider :min="1900"
                  :max="2020"
                  v-model="value"
                  show-input
                  style="width: 800px; margin: 0 20px 0 20px;">
       </el-slider>
-      <el-button type="primary" icon="el-icon-search" style="font-size: 24px; padding: 10px;"
+      <el-button type="primary" icon="el-icon-search" style="font-size: 16px; padding: 8px;"
                  @click="byYear" circle></el-button>
     </div>
     <div id="cesiumContainer"></div>
@@ -329,7 +329,7 @@ html,
 body,
 #cesiumContainer {
   width: 100%;
-  height: 85vh;
+  height: 88vh;
   margin: 0;
   padding: 0;
   overflow: hidden;

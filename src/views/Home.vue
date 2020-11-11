@@ -1,47 +1,54 @@
 <template>
   <el-container>
-    <el-container style="height: 95vh;">
+    <el-container style="height: 100vh;">
       <el-header class="header"
-                 style="padding: 0 20px 10px 20px;"
-                 height="84px">
+                 style="padding: 0 20px 0px 20px;"
+                 height="40px">
         <div class="row-wrap"
              style="align-items: flex-end;">
-          <div style="font-size: 48px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location"/>文化名人地图</div>
-          <div style="margin-left: 20px;">v1.0.0</div>
+          <div style="font-size: 28px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location"/>文化名人地图</div>
+          <div style="margin: 0 0 2px 10px;">v1.0.0</div>
         </div>
         <div class="row-wrap btn-wrap">
           <el-button type="text"
                      icon="el-icon-s-home"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      disabled
                      @click="returnHome"></el-button>
           <el-button type="text"
                      icon="el-icon-search"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      @click="gotoFilter"></el-button>
           <el-button v-if="IsLog"
                      type="text"
                      icon="el-icon-user-solid"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      @click="gotoUser">{{ this.$store.state.userInfo.name }}</el-button>
           <el-button v-else
                      type="text"
                      icon="el-icon-user"
-                     style="font-size: 36px;"
+                     style="font-size: 24px;"
                      @click="login">登录</el-button>
           <el-button v-if="IsLog"
                      type="text"
                      icon="el-icon-switch-button"
-                     style="font-size: 36px; color: red;"
+                     style="font-size: 24px; color: red;"
                      @click="exit"></el-button>
           <el-button type="text"
                      icon="el-icon-more"
-                     style="font-size: 36px;"></el-button>
+                     style="font-size: 24px;"></el-button>
         </div>
       </el-header>
       <el-container>
         <el-main class="elmain"
                  style="padding: 0;">
+                 <div class="card image-search-bar">
+          <form>
+            <input type="file" name="file">
+            <input type="submit" value="submit">
+          </form>
+                 </div>
+
           <Cesium></Cesium>
         </el-main>
       </el-container>
