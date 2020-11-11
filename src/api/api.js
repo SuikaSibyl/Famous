@@ -1,7 +1,7 @@
 import Vue from "vue";
 var that = this;
-let host = "http://10.110.8.238:10000";
-// let host = "http://10.110.8.238:10000"
+// let host = "http://10.110.8.238:10000";
+let host = "http://127.0.0.1:8000";
 
 export const queryPeople = (params) => {
     return Vue.prototype.$axios.get(`${host}/peoples/`);
@@ -75,22 +75,29 @@ export const askIsworkFav = (workId) => {
 };
 
 export const searchPeopleName = (params) => {
-    return Vue.prototype.$axios.get(`${host}/peoplename/?search=` + params.search, params);
+    return Vue.prototype.$axios.get(
+        `${host}/peoplename/?search=` + params.search,
+        params
+    );
 };
 
 export const searchPeopleMajor = (params) => {
-    return Vue.prototype.$axios.get(`${host}/peoplemajor/?search=` + params.search, params);
+    return Vue.prototype.$axios.get(
+        `${host}/peoplemajor/?search=` + params.search,
+        params
+    );
 };
 
 export const searchWork = (params) => {
-    return Vue.prototype.$axios.get(`${host}/worksearch/?search=` + params.search, params);
+    return Vue.prototype.$axios.get(
+        `${host}/worksearch/?search=` + params.search,
+        params
+    );
 };
 
 export const peopleByYear = (params) => {
     if ("id" in params) {
-        return Vue.prototype.$axios.get(
-            `${host}/peoples/?date=` + params.id
-        );
+        return Vue.prototype.$axios.get(`${host}/peoples/?date=` + params.id);
     }
 };
 
