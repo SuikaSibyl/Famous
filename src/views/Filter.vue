@@ -55,15 +55,15 @@
           <div class="search-wrap">
             <div v-for="item in searchResults"
                  class="search-card"
-                 :key="item">
+                 :key="item.id">
               <div class="search-block">
-                <el-button style="padding: 5px;"
+                <el-button v-if="item.author" style="padding: 5px;"
                            type="primary"
                            icon="el-icon-info"
                            circle
-                           @click="gotoPeople(item.id)"></el-button>
+                           @click="gotoPeople(item.title?item.author.id:item.id)"></el-button>
 
-                <el-image :src="item.headimage"
+                <el-image :src="item.title?item.image:item.headimage"
                           fit="cover"
                           style="height: 160px; width: 120px;">
                   <div slot="error"
@@ -73,9 +73,9 @@
                 </el-image>
                 <div>
                   <span class="tags"
-                        style="margin: auto 0;">{{ item.major }}</span><span style="font-size: 18px; margin-left: 5px;">{{ item.name }}</span>
+                        style="margin: auto 0;">{{ item.title?(item.author?item.author.major:'无作者信息'):item.major }}</span><span v-if="item.title" style="font-size: 18px; margin-left: 5px;">{{ item.name }}</span>
                 </div>
-                <div style="font-size: 12px; margin-top: 5px;">{{ item.birthplace }}</div>
+                <div style="font-size: 12px; margin-top: 5px;">{{ item.title?item.title:item.birthplace }}</div>
               </div>
             </div>
           </div>
