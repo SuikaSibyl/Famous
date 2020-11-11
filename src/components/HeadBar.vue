@@ -33,14 +33,14 @@
       </el-tooltip>
       <el-tooltip class="item"
                   effect="dark"
-                  content="我的"
+                  :content="IsLog?'我的':'登录'"
                   placement="bottom-end">
 
         <el-button type="text"
-                   icon="el-icon-user-solid"
+                   :icon="IsLog?'el-icon-user-solid':'el-icon-user'"
                    style="font-size: 24px;"
                    :disabled="current=='my'?true:false"
-                   @click="gotoUser">{{ this.$store.state.userInfo.name }}</el-button>
+                   @click="gotoUser">{{ this.$data.IsLog?this.$store.state.userInfo.name:'' }}</el-button>
       </el-tooltip>
       <el-tooltip class="item"
                   effect="dark"
@@ -57,7 +57,8 @@
                   content="登出"
                   placement="bottom-end">
 
-        <el-button type="text"
+        <el-button v-if="IsLog"
+                   type="text"
                    icon="el-icon-switch-button"
                    style="font-size: 24px; color: #F56C6C;"
                    @click="exit"></el-button>
@@ -92,7 +93,11 @@ export default {
       this.$router.push({ name: 'Home' })
     },
     gotoUser() {
-      this.$router.push({ name: 'userdetail' })
+      if (this.$data.IsLog) {
+        this.$router.push({ name: 'userdetail' })
+      } else {
+        this.login()
+      }
     },
     gotoFilter() {
       this.$router.push({ name: 'filter' })
@@ -104,6 +109,7 @@ export default {
       cookie.delCookie('token')
       cookie.delCookie('name')
       this.IsLog = false
+      this.$message('用户已退出登录')
       store.commit('exit')
     },
   },

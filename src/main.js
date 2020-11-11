@@ -56,7 +56,7 @@ Axios.interceptors.response.use(undefined, (error) => {
                 // alert('服务器错误');
         }
     }
-    return Promise.reject(error.response.data); // 返回接口返回的错误信息
+    //return Promise.reject(error.response.data); // 返回接口返回的错误信息
 });
 
 Vue.config.productionTip = false;

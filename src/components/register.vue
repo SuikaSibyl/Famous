@@ -123,8 +123,18 @@ export default {
 };
 </script>
 <style scoped>
+body {
+  background-image: url('../../static/images/webview.jpg');
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: cover;
+}
 .error-text {
-    color: #fa8341;
+    color: #409eff;
+}
+.form-box > .tab > h2.active {
+    border-bottom: 3px solid #409eff;
+    color: #333;
 }
 .c-box {
     width: 100%;
@@ -215,8 +225,8 @@ export default {
     overflow: hidden;
 }
 .imgslide .dots li.active {
-    background: #6ec559;
-    color: #6ec559;
+    background:#409eff;
+    color: #409eff;
 }
 .unslider-arrow {
     position: absolute;
@@ -266,7 +276,7 @@ export default {
     font-size: 18px;
     font-weight: normal;
     color: #333;
-    border-bottom: 1px solid #eaeaea;
+    border-bottom: 0 solid #eaeaea;
 }
 .form-box > .tab > h2 {
     float: left;
@@ -358,7 +368,7 @@ export default {
 
 .form-box .form-group.focus,
 .form-box .valcode.error {
-    border-color: #6ec558;
+    border-color: #409eff;
     box-shadow: 0 0 5px #6ec558;
 }
 .auto-box {
@@ -369,7 +379,7 @@ export default {
     vertical-align: sub;
 }
 .auto-box > label > a {
-    color: #6ec559;
+    color: #409eff;
 }
 .btn {
     width: 100%;
@@ -381,10 +391,10 @@ export default {
     cursor: pointer;
 }
 .btn-green {
-    background: #6ec55a;
+    background: #409eff;
 }
 .btn-green:hover {
-    background: #5dbf45;
+    background: #53a8ff;
 }
 .hide {
     display: none !important;
@@ -395,9 +405,9 @@ export default {
     bottom: 25px;
 }
 .form-p > a {
-    color: #fa8341;
+    color: #e6a23c;
 }
 .form-p > a:hover {
-    color: #666;
+    color: #909399;
 }
 </style>

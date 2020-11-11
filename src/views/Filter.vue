@@ -73,7 +73,7 @@
                 </el-image>
                 <div>
                   <span class="tags"
-                        style="margin: auto 0;">{{ item.title?(item.author?item.author.major:'无作者信息'):item.major }}</span><span v-if="item.title" style="font-size: 18px; margin-left: 5px;">{{ item.name }}</span>
+                        style="margin: auto 0;">{{ item.title?(item.author?item.author.major:'无作者信息'):item.major }}</span><span v-if="item.id" style="font-size: 18px; margin-left: 5px;">{{ item.name }}</span>
                 </div>
                 <div style="font-size: 12px; margin-top: 5px;">{{ item.title?item.title:item.birthplace }}</div>
               </div>
