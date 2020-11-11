@@ -5,10 +5,11 @@ import Cesium from "../components/Cesium.vue";
 import login from "../components/login.vue";
 import register from "../components/register.vue";
 import UserDetail from "../views/UserDetail.vue";
+import filter from "../views/Filter.vue";
+
 Vue.use(VueRouter);
 
-const routes = [
-    {
+const routes = [{
         path: "/",
         name: "Home",
         component: Home,
@@ -20,7 +21,7 @@ const routes = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-            import(/* webpackChunkName: "about" */ "../views/About.vue"),
+            import ( /* webpackChunkName: "about" */ "../views/About.vue"),
     },
     {
         path: "/cesium",
@@ -41,6 +42,11 @@ const routes = [
         path: "/UserDetail",
         name: "userdetail",
         component: UserDetail,
+    },
+    {
+        path: "/Filter",
+        name: "filter",
+        component: filter,
     },
 ];
 

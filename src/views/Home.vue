@@ -1,79 +1,103 @@
 <template>
-    <div id="container" class="box">
-        <el-row :gutter="20" style="z-index:100">
-            <el-col :span="6" style="z-index:100">
-                <div class="grid-content bg-purple" style="z-index:100">
-                    <el-button
-                        v-if="IsLog"
-                        @click="jumpToMy"
-                        style="z-index:100"
-                        type="primary"
-                        icon="el-icon-edit"
-                        >welcome back! &nbsp;&nbsp;&nbsp;
-                        {{ this.$store.state.userInfo.name }}</el-button
-                    >
-                    <el-button
-                        v-else
-                        @click="login"
-                        style="z-index:100"
-                        type="primary"
-                        icon="el-icon-edit"
-                        >登录</el-button
-                    >
-
-                    <el-button
-                        v-if="IsLog"
-                        @click="exit"
-                        style="z-index:100"
-                        type="primary"
-                        icon="el-icon-edit"
-                        >登出</el-button
-                    >
-                </div>
-            </el-col>
-        </el-row>
-        <el-container>
-            <el-main>
-                <Cesium></Cesium>
-            </el-main>
-        </el-container>
-    </div>
+  <el-container>
+    <el-container style="height: 100vh;">
+      <HeadBar current="home"></HeadBar>
+      <el-container>
+        <el-main class="elmain"
+                 style="padding: 0;">
+          <div class="card image-search-bar">
+            <input type="file"
+                   name="file"
+                   id="file1" />
+            <button @click="add">添加</button>
+          </div>
+          <Cesium></Cesium>
+        </el-main>
+      </el-container>
+      <el-footer class="footer"
+                 height="40px">
+        <FootBar></FootBar>
+      </el-footer>
+    </el-container>
+  </el-container>
 </template>
 
 <script>
-import Cesium from "@/components/Cesium.vue";
-import cookie from "../../static/js/cookie";
-import store from "../store";
+import Cesium from '@/components/Cesium.vue'
+import cookie from '../../static/js/cookie'
+import store from '../store'
+import HeadBar from '../components/HeadBar'
+import FootBar from '../components/FootBar'
+import { upload, searchpeoplepic, searchpeopleupload } from '../api/api'
+import Vue from 'vue'
 export default {
-    name: "Home",
-    data() {
-        return { IsLog: false };
+  name: 'Home',
+  data() {
+    return {
+      IsLog: false,
+      result: [],
+      IsRes: false,
+      respic: '',
+      uploadpic: '',
+      recordid: '',
+    }
+  },
+  components: {
+    Cesium,
+    HeadBar,
+    FootBar,
+  },
+  created() {},
+  methods: {
+    async add() {
+      var that = this
+      var data = new FormData()
+      var image = document.getElementById('file1').files[0]
+      console.log(image)
+      data.append('file', image)
+      data.append('headers', {
+        'Content-Type': 'multipart/form-data',
+      })
+      console.log(data)
+      var res = await upload(data)
+      console.log('res', res)
+      if (res.data.result[0] == '-1') {
+        that.$data.IsRes = false
+      } else {
+        that.$data.IsRes = true
+        that.$data.recordid = res.data.recordid
+        console.log('that.$data.recordid', that.$data.recordid)
+
+        var temp = []
+        res.data.result.forEach(async function (item, index) {
+          console.log(item)
+          temp.push(searchpeoplepic(item))
+        })
+
+        Promise.all(temp).then(async (res) => {
+          for (var i = 0; i < temp.length; i++) {
+            console.log('res[i]', i, res[i])
+            this.$data.result.push(res[i].data[0])
+          }
+        })
+      }
+      var res2 = await searchpeopleupload(that.$data.recordid)
+      console.log('res2', res2)
+      that.$data.respic = res2.data.resimage
+      that.$data.uploadpic = res2.data.image
+
+      console.log(
+        this.$data.IsRes,
+        this.$data.respic,
+        this.$data.uploadpic,
+        this.$data.recordid,
+        this.$data.result
+      )
     },
-    components: {
-        Cesium,
-    },
-    created() {
-        if (this.$store.state.userInfo) {
-            if (this.$store.state.userInfo.name) this.IsLog = true;
-        }
-    },
-    methods: {
-        login() {
-            this.$router.push({ name: "Login" });
-        },
-        jumpToMy() {
-            //this.$router.push("/cart")
-            //传递的参数用{{ $route.query.goodsId }}获取
-            this.$router.push({ name: "userdetail" });
-            //this.$router.go(-2)
-            //后退两步
-        },
-        exit() {
-            cookie.delCookie("token");
-            cookie.delCookie("name");
-            this.IsLog = false;
-            store.commit("exit");
-        },
-    },
-};
+  },
+}
 </script>
+
+<style>
+@import url('../../static/main.css');
+</style>
