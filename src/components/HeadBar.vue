@@ -51,6 +51,17 @@
                    icon="el-icon-more"
                    style="font-size: 24px;"></el-button>
       </el-tooltip>
+
+      <el-tooltip class="item"
+                  effect="dark"
+                  content="登出"
+                  placement="bottom-end">
+
+        <el-button type="text"
+                   icon="el-icon-switch-button"
+                   style="font-size: 24px; color: #F56C6C;"
+                   @click="exit"></el-button>
+      </el-tooltip>
     </div>
 
   </el-header>
@@ -61,11 +72,11 @@ export default {
   name: 'HeadBar',
   props: {
     current: String,
-    title: String
+    title: String,
   },
   data() {
     return {
-      IsLog: false
+      IsLog: false,
     }
   },
   created() {

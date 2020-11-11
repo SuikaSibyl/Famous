@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-container style="height: 100vh;">
+    <el-container style="height: 98vh;">
       <HeadBar current="search"
                title="搜索"></HeadBar>
       <el-container>
@@ -57,7 +57,7 @@
                  class="search-card"
                  :key="item.id">
               <div class="search-block">
-                <el-button v-if="item.author" style="padding: 5px;"
+                <el-button v-if="item.author||item.id" style="padding: 5px;"
                            type="primary"
                            icon="el-icon-info"
                            circle

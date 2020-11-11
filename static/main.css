@@ -32,7 +32,7 @@ body {
 
 .image-search-bar {
     position: absolute;
-    top: 40px;
+    top: 10px;
     left: 0;
     z-index: 100;
 }
@@ -45,6 +45,13 @@ body {
     font-size: 18px;
     font-weight: lighter;
     transition: ease-in-out 400ms;
+}
+
+.rotate-btn {
+    position: absolute;
+    top: 160px;
+    left: 20px;
+    z-index: 400;
 }
 
 .page-back {

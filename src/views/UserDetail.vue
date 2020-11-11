@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-container style="height: 100vh;">
+    <el-container style="height: 98vh;">
       <HeadBar current="my"
                title="我的收藏"></HeadBar>
       <el-container>

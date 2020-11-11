@@ -1,5 +1,29 @@
 <template>
   <div class="elmain">
+    <div class="rotate-btn">
+      <el-tooltip class="item"
+                  effect="dark"
+                  content="开启旋转"
+                  placement="right">
+        <el-button v-if="!rotate"
+                   style="font-size: 20px; padding: 8px;"
+                   type="primary"
+                   icon="el-icon-video-play"
+                   @click="rotateHandler"
+                   circle></el-button>
+      </el-tooltip>
+      <el-tooltip class="item"
+                  effect="dark"
+                  content="暂停旋转"
+                  placement="right">
+        <el-button v-if="rotate"
+                   style="font-size: 20px; padding: 8px;"
+                   type="info"
+                   icon="el-icon-video-pause"
+                   @click="rotateHandler"
+                   circle></el-button>
+      </el-tooltip>
+    </div>
     <div class="slider">
       <el-slider :min="1900"
                  :max="2020"
@@ -29,6 +53,8 @@ export default {
     return {
       value: 0,
       viewer: null,
+      rotate: true,
+      rotateHandler: '',
     }
   },
   methods: {
@@ -99,9 +125,9 @@ export default {
       this.$data.viewer = new Cesium.Viewer('cesiumContainer', {
         orderIndependentTranslucency: false,
         contextOptions: {
-            webgl: {
-                alpha: true,
-            }
+          webgl: {
+            alpha: true,
+          },
         },
       })
       let viewer = this.$data.viewer
@@ -124,9 +150,44 @@ export default {
       })
       // 设置背景
       viewer.scene.skyBox.show = false
+      viewer.scene.sun.show = false //在Cesium1.6(不确定)之后的版本会显示太阳和月亮，不关闭会影响展示
+      viewer.scene.moon.show = false
+
       viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0)
 
       var frame = viewer.infoBox.frame
+
+      viewer.clock.multiplier = 200 //速度
+      viewer.clock.shouldAnimate = true
+      var previousTime = viewer.clock.currentTime.secondsOfDay
+      function onTickCallback() {
+        var spinRate = 1
+        var currentTime = viewer.clock.currentTime.secondsOfDay
+        var delta = (currentTime - previousTime) / 1000
+        previousTime = currentTime
+        viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z, -spinRate * delta)
+      }
+      viewer.clock.onTick.addEventListener(onTickCallback)
+
+      //监听点击事件
+      self.$data.rotateHandler = function (click) {
+        if (self.$data.rotate) {
+          viewer.clock.onTick.removeEventListener(onTickCallback)
+          viewer.clock.shouldAnimate = false
+          self.$data.rotate = false
+        } else {
+          viewer.clock.onTick.addEventListener(onTickCallback)
+          viewer.clock.shouldAnimate = true
+          self.$data.rotate = true
+        }
+      }
+      /*
+      var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
+      handler.setInputAction(
+        self.$data.rotateHandler,
+        Cesium.ScreenSpaceEventType.LEFT_DOWN
+      )
+      */
 
       frame.addEventListener(
         'load',
@@ -147,6 +208,8 @@ export default {
           billboard: {
             image: '/blu-circle.png',
             scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.0, 1.5e7, 0.4),
+            width: 64,
+            height: 64,
           },
           description:
             '<div id="leftBodyer">' +
@@ -195,7 +258,7 @@ export default {
         },
         false
       )
-          
+
       // ***********************************************************
       // Add data to the entity
       // ***********************************************************
@@ -216,7 +279,6 @@ export default {
         })
       })
 
-      
       // ***********************************************************
       // Do clustering
       // ***********************************************************
@@ -315,7 +377,6 @@ export default {
       subscribeParameter('pixelRange')
       subscribeParameter('minimumClusterSize')
 
-
       // ***********************************************************
       // Add data to the entity
       // ***********************************************************
@@ -335,7 +396,6 @@ export default {
           }
         })
       })
-
     },
   },
   created: function () {},
@@ -355,16 +415,15 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-image: url("../../static/images/skybox.jpg");
-  background-repeat:no-repeat;
+  background-image: url('../../static/images/skybox.jpg');
+  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
 
-
-footer{
-    width: 100%;
-    position: absolute;
-    bottom: 30px
+footer {
+  width: 100%;
+  position: absolute;
+  bottom: 30px;
 }
 </style>

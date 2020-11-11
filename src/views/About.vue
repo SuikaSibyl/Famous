@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-container style="height: 100vh;">
+    <el-container style="height: 98vh;">
       <HeadBar current='none'
                title="人物详情"></HeadBar>
       <el-container>
@@ -90,8 +90,8 @@
                            icon="el-icon-star-off"
                            size="medium"
                            round>收藏作品</el-button>
-                <el-button type="success"
-                           icon="el-icon-download"
+                <el-button type="info"
+                           icon="el-icon-view"
                            @click="downloadWork(item.image)"
                            circle></el-button>
               </div>
