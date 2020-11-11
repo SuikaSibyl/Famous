@@ -1,45 +1,23 @@
 <template>
   <el-container>
     <el-container style="height: 100vh;">
-      <el-header class="header"
-                 style="padding: 0 20px 0px 20px;"
-                 height="40px">
-        <div class="row-wrap"
-             style="align-items: flex-end;">
-          <div class="page-back"
-               @click="goBack"><i class="el-icon-back" /><span style="margin: 0 20px 0 10px;">返回</span></div>
-          <div style="font-size: 28px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location" />文化名人地图</div>
-          <div style="margin: 0 0 2px 10px;">v1.0.0</div>
-          <div style="font-size: 24px; margin-left: 40px;">人物详情</div>
-        </div>
-        <div class="row-wrap btn-wrap">
-          <el-button type="text"
-                     icon="el-icon-s-home"
-                     style="font-size: 24px;"
-                     @click="returnHome"></el-button>
-          <el-button type="text"
-                     icon="el-icon-search"
-                     style="font-size: 24px;"
-                     @click="gotoFilter"></el-button>
-          <el-button type="text"
-                     icon="el-icon-user-solid"
-                     style="font-size: 24px;"
-                     @click="gotoUser">{{ this.$store.state.userInfo.name }}</el-button>
-          <el-button type="text"
-                     icon="el-icon-more"
-                     style="font-size: 24px;"></el-button>
-        </div>
-
-      </el-header>
+      <HeadBar current='none'
+               title="人物详情"></HeadBar>
       <el-container>
         <el-aside width="500px"
                   class="aside">
-          <div class="column-wrap">
+          <div class="column-wrap"
+               style="position: relative;">
+            <el-button v-if="!name"
+                       @click="refresh"
+                       style="position: absolute; z-index: 200; right: 0;"
+                       type="primary"
+                       icon="el-icon-refresh-right"
+                       circle></el-button>
             <div class="row-wrap margin-bottom">
               <div class="avatar-wrap"
                    style="margin-right: 20px;">
                 <el-image :src="url"
-                          :preview-src-list="[url]"
                           fit="contain">
                 </el-image>
               </div>
@@ -66,16 +44,22 @@
                              round>收藏人物</el-button>
                 </div>
                 <div>{{ dateofbirth }} - {{ dateofdeath?dateofdeath:'?' }}</div>
-                <div>出生地：{{ birthplace }}</div>
-                <div>专业：{{ major }}</div>
-                <div>国籍：{{ nationality }}</div>
+                <div><span class="text-blue text-bold">出生地：</span>{{ birthplace }}</div>
+                <div><span class="text-blue text-bold">专业：</span>{{ major }}</div>
+                <div><span class="text-blue text-bold">国籍：</span>{{ nationality }}</div>
+                <div><span class="text-blue text-bold">毕业院校：</span>{{ academy }}</div>
               </div>
             </div>
             <div class="margin-bottom">
-              <div>简介：{{ introduction }}</div>
-              <div>毕业院校：{{ academy }}</div>
-              <div>代表作品：{{ repwork }}</div>
-              <div>主要成就：{{ majorAchv }}</div>
+              <el-divider class="divider-about"
+                          content-position="left">简介</el-divider>
+              <div style="margin-top: 15px;">{{ introduction }}</div>
+              <el-divider class="divider-about"
+                          content-position="left">代表作品</el-divider>
+              <div style="margin-top: 15px;">{{ repwork }}</div>
+              <el-divider class="divider-about"
+                          content-position="left">主要成就</el-divider>
+              <div style="margin-top: 15px;">{{ majorAchv }}</div>
             </div>
           </div>
         </el-aside>
@@ -85,10 +69,10 @@
                        trigger="click">
             <el-carousel-item v-for="(item, index) in works"
                               :key="item.id">
-              
-              <el-image class="elimage" style="width: 100%; height: 100%; background-color: white;"
+
+              <el-image class="elimage"
+                        style="width: 100%; height: 100%; background-color: white;"
                         :src="item.image"
-                        :preview-src-list="[item.image]"
                         fit="contain"></el-image>
               <div class="work-title card">{{ item.title }}</div>
               <div class="work-btn-wrap">
@@ -106,6 +90,10 @@
                            icon="el-icon-star-off"
                            size="medium"
                            round>收藏作品</el-button>
+                <el-button type="success"
+                           icon="el-icon-download"
+                           @click="downloadWork(item.image)"
+                           circle></el-button>
               </div>
             </el-carousel-item>
           </el-carousel>
@@ -113,11 +101,7 @@
       </el-container>
       <el-footer class="footer"
                  height="40px">
-        2020 DAM | Copyright © 沈吕可晟 鲁昊霖 陆子仪 唐敏哲 周宇轩 all right reserved | Powered by
-        <a href="https://www.djangoproject.com/">Django</a> /
-        <a href="https://cn.vuejs.org/">Vue.js</a> /
-        <a href="https://element.eleme.cn/#/zh-CN">Element UI</a> /
-        <a href="https://cesium.com/index.html">Cesium®</a>
+        <FootBar></FootBar>
       </el-footer>
     </el-container>
   </el-container>
@@ -134,6 +118,8 @@ import {
   delFavWork,
   askIsworkFav,
 } from '../api/api'
+import HeadBar from '../components/HeadBar'
+import FootBar from '../components/FootBar'
 import cookie from '../../static/js/cookie.js'
 export default {
   name: 'Home',
@@ -157,6 +143,10 @@ export default {
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       IsLog: false,
     }
+  },
+  components: {
+    HeadBar,
+    FootBar,
   },
   created: function () {
     accuratePeople({
@@ -212,7 +202,10 @@ export default {
         .then((response) => {
           console.log(response.data)
           this.hasFav = true
-          alert('已成功加入收藏夹')
+          this.$message({
+            message: '收藏人物成功',
+            type: 'success',
+          })
         })
         .catch(function (error) {
           console.log(error)
@@ -222,6 +215,7 @@ export default {
       delFav(this.$route.params.id)
         .then((response) => {
           console.log(response.data)
+          this.$message('已取消收藏')
           this.hasFav = false
         })
         .catch(function (error) {
@@ -234,7 +228,10 @@ export default {
         .then((response) => {
           console.log(response.data)
           this.$data.works[itemid].isFav = true
-          alert('已成功加入收藏夹')
+          this.$message({
+            message: '收藏作品成功',
+            type: 'success',
+          })
         })
         .catch(function (error) {
           console.log(error)
@@ -245,23 +242,18 @@ export default {
       delFavWork(workid)
         .then((response) => {
           console.log(response.data)
+          this.$message('已取消收藏')
           this.$data.works[itemid].isFav = false
         })
         .catch(function (error) {
           console.log(error)
         })
     },
-    goBack() {
-      this.$router.go(-1)
+    downloadWork(url) {
+      window.open(url)
     },
-    returnHome() {
-      this.$router.push({ name: 'Home' })
-    },
-    gotoUser() {
-      this.$router.push({ name: 'userdetail' })
-    },
-    gotoFilter() {
-      this.$router.push({ name: 'filter' })
+    refresh() {
+      location.reload()
     },
   },
 }

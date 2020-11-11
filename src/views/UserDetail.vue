@@ -1,39 +1,10 @@
 <template>
   <el-container>
     <el-container style="height: 100vh;">
-      <el-header class="header"
-                 style="padding: 0 20px 0px 20px;"
-                 height="40px">
-        <div class="row-wrap"
-             style="align-items: flex-end;">
-          <div class="page-back"
-               @click="goBack"><i class="el-icon-back" /><span style="margin: 0 20px 0 10px;">返回</span></div>
-          <div style="font-size: 28px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location"/>文化名人地图</div>
-          <div style="margin: 0 0 2px 10px;">v1.0.0</div>
-          <div style="font-size: 24px; margin-left: 40px;">我的</div>
-        </div>
-        <div class="row-wrap btn-wrap">
-          <el-button type="text"
-                     icon="el-icon-s-home"
-                     style="font-size: 24px;"
-                     @click="returnHome"></el-button>
-          <el-button type="text"
-                     icon="el-icon-search"
-                     style="font-size: 24px;"
-                     @click="gotoFilter"></el-button>
-          <el-button type="text"
-                     icon="el-icon-user-solid"
-                     style="font-size: 24px;"
-                     disabled
-                     @click="gotoUser">{{ this.$store.state.userInfo.name }}</el-button>
-          <el-button type="text"
-                     icon="el-icon-more"
-                     style="font-size: 24px;"></el-button>
-        </div>
-
-      </el-header>
+      <HeadBar current="my"
+               title="我的收藏"></HeadBar>
       <el-container>
-        <el-aside width="0px"
+        <el-aside width="200px"
                   class="aside">
         </el-aside>
         <el-main>
@@ -56,6 +27,7 @@
                            circle></el-button>
                 <el-image :src="item.famouspeople.headimage"
                           fit="cover"
+                          :preview-src-list="[item.famouspeople.headimage]"
                           style="height: 160px; width: 120px;">
                   <div slot="error"
                        class="image-slot">
@@ -88,6 +60,7 @@
                            circle></el-button>
                 <el-image :src="item.works.image"
                           fit="cover"
+                          :preview-src-list="[item.works.image]"
                           style="height: 160px; width: 120px;">
                   <div slot="error"
                        class="image-slot">
@@ -105,11 +78,7 @@
       </el-container>
       <el-footer class="footer"
                  height="40px">
-        2020 DAM | Copyright © 沈吕可晟 鲁昊霖 陆子仪 唐敏哲 周宇轩 all right reserved | Powered by 
-        <a href="https://www.djangoproject.com/">Django</a> /
-        <a href="https://cn.vuejs.org/">Vue.js</a> /
-        <a href="https://element.eleme.cn/#/zh-CN">Element UI</a> /
-        <a href="https://cesium.com/index.html">Cesium®</a>
+        <FootBar></FootBar>
       </el-footer>
     </el-container>
   </el-container>
@@ -118,6 +87,8 @@
 <script>
 import { getAllFavPeople, getAllFavWork, delFavWork, delFav } from '../api/api'
 import cookie from '../../static/js/cookie.js'
+import HeadBar from '../components/HeadBar'
+import FootBar from '../components/FootBar'
 export default {
   name: 'Home',
   data() {
@@ -128,6 +99,10 @@ export default {
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       IsLog: false,
     }
+  },
+  components: {
+    HeadBar,
+    FootBar,
   },
   created: function () {
     getAllFavPeople().then((response) => {
@@ -147,6 +122,7 @@ export default {
       delFav(id)
         .then((response) => {
           console.log(response.data)
+          this.$message('已取消收藏')
           getAllFavPeople().then((response) => {
             this.favPeople = response.data
             console.log('data', response.data)
@@ -160,26 +136,15 @@ export default {
       delFavWork(id)
         .then((response) => {
           console.log(response.data)
+          this.$message('已取消收藏')
           getAllFavWork().then((response) => {
-            this.favWorks = response.data 
+            this.favWorks = response.data
             console.log('data', response.data)
           })
         })
         .catch(function (error) {
           console.log(error)
         })
-    },
-    goBack() {
-      this.$router.go(-1)
-    },
-    returnHome() {
-      this.$router.push({ name: 'Home' })
-    },
-    gotoUser() {
-      this.$router.push({ name: 'userdetail' })
-    },
-    gotoFilter() {
-      this.$router.push({ name: 'filter' })
     },
     gotoPeople(id) {
       this.$router.push({ path: 'about/' + id })

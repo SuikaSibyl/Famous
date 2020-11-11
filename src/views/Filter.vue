@@ -1,37 +1,8 @@
 <template>
   <el-container>
     <el-container style="height: 100vh;">
-      <el-header class="header"
-                 style="padding: 0 20px 0px 20px;"
-                 height="40px">
-        <div class="row-wrap"
-             style="align-items: flex-end;">
-          <div class="page-back"
-               @click="goBack"><i class="el-icon-back" /><span style="margin: 0 20px 0 10px;">返回</span></div>
-          <div style="font-size: 28px; font-weight: lighter; color: #409eff;"><i class="el-icon-map-location"/>文化名人地图</div>
-          <div style="margin: 0 0 2px 10px;">v1.0.0</div>
-          <div style="font-size: 24px; margin-left: 40px;">搜索</div>
-        </div>
-        <div class="row-wrap btn-wrap">
-          <el-button type="text"
-                     icon="el-icon-s-home"
-                     style="font-size: 24px;"
-                     @click="returnHome"></el-button>
-          <el-button type="text"
-                     icon="el-icon-search"
-                     style="font-size: 24px;"
-                     disabled
-                     @click="gotoFilter"></el-button>
-          <el-button type="text"
-                     icon="el-icon-user-solid"
-                     style="font-size: 24px;"
-                     @click="gotoUser">{{ this.$store.state.userInfo.name }}</el-button>
-          <el-button type="text"
-                     icon="el-icon-more"
-                     style="font-size: 24px;"></el-button>
-        </div>
-
-      </el-header>
+      <HeadBar current="search"
+               title="搜索"></HeadBar>
       <el-container>
         <el-aside width="250px"
                   class="aside">
@@ -68,6 +39,17 @@
                          @click="searchpeoplemajor"></el-button>
             </el-input>
           </div>
+          <el-divider class="divider-about"
+                      content-position="left">年代</el-divider>
+          <div class="row-wrap"
+               style="flex-wrap: wrap;">
+            <div style="margin: 0 10px 0 10px;"
+                 v-for="item in age"
+                 :key="item">
+              <el-button type="text">{{ item }}年代</el-button>
+            </div>
+          </div>
+
         </el-aside>
         <el-main>
           <div class="search-wrap">
@@ -90,7 +72,8 @@
                   </div>
                 </el-image>
                 <div>
-                  <span class="tags" style="margin: auto 0;">{{ item.major }}</span><span style="font-size: 18px; margin-left: 5px;">{{ item.name }}</span>
+                  <span class="tags"
+                        style="margin: auto 0;">{{ item.major }}</span><span style="font-size: 18px; margin-left: 5px;">{{ item.name }}</span>
                 </div>
                 <div style="font-size: 12px; margin-top: 5px;">{{ item.birthplace }}</div>
               </div>
@@ -100,11 +83,7 @@
       </el-container>
       <el-footer class="footer"
                  height="40px">
-        2020 DAM | Copyright © 沈吕可晟 鲁昊霖 陆子仪 唐敏哲 周宇轩 all right reserved | Powered by 
-        <a href="https://www.djangoproject.com/">Django</a> /
-        <a href="https://cn.vuejs.org/">Vue.js</a> /
-        <a href="https://element.eleme.cn/#/zh-CN">Element UI</a> /
-        <a href="https://cesium.com/index.html">Cesium®</a>
+        <FootBar></FootBar>
       </el-footer>
     </el-container>
   </el-container>
@@ -113,6 +92,8 @@
 <script>
 import { searchPeopleName, searchPeopleMajor, searchWork } from '../api/api'
 import cookie from '../../static/js/cookie.js'
+import HeadBar from '../components/HeadBar'
+import FootBar from '../components/FootBar'
 export default {
   name: 'Home',
   data() {
@@ -122,7 +103,12 @@ export default {
       major: '',
       searchResults: [],
       IsLog: false,
+      age: [20, 30, 40, 50, 60, 70, 80, 90],
     }
+  },
+  components: {
+    HeadBar,
+    FootBar,
   },
   created: function () {
     if (this.$store.state.userInfo) {
@@ -161,20 +147,8 @@ export default {
           console.log(error)
         })
     },
-    goBack() {
-      this.$router.go(-1)
-    },
     gotoPeople(id) {
       this.$router.push({ path: 'about/' + id })
-    },
-    returnHome() {
-      this.$router.push({ name: 'Home' })
-    },
-    gotoUser() {
-      this.$router.push({ name: 'userdetail' })
-    },
-    gotoFilter() {
-      this.$router.push({ name: 'filter' })
     },
   },
 }

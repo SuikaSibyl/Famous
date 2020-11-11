@@ -13,8 +13,17 @@ body {
     min-width: 800px;
 }
 
+.text-blue {
+    color: #409EFF;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
 .elmain {
     min-width: 800px;
+    position: relative;
 }
 
 .elimage:hover+.work-title {
@@ -52,7 +61,7 @@ body {
     flex-direction: row;
     align-items: center;
     z-index: 100;
-    bottom: 50px;
+    bottom: 10px;
     left: 50%;
     margin-left: -449px;
     background-color: rgba(255, 255, 255, 0.2);
@@ -134,6 +143,12 @@ body {
     color: gray;
 }
 
+.divider-about>div {
+    font-size: 20px;
+    background-color: white;
+    color: gray;
+}
+
 .head-wrap {
     display: flex;
     flex-direction: row;
@@ -161,7 +176,7 @@ body {
     position: fixed;
     bottom: 0;
     left: 10px;
-    width: 120px;
+    width: 165px;
     height: 40px;
     padding: 10px;
     display: flex;

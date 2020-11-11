@@ -7,8 +7,11 @@
                  show-input
                  style="width: 800px; margin: 0 20px 0 20px;">
       </el-slider>
-      <el-button type="primary" icon="el-icon-search" style="font-size: 16px; padding: 8px;"
-                 @click="byYear" circle></el-button>
+      <el-button type="primary"
+                 icon="el-icon-search"
+                 style="font-size: 16px; padding: 8px;"
+                 @click="byYear"
+                 circle></el-button>
     </div>
     <div id="cesiumContainer"></div>
   </div>
@@ -93,7 +96,14 @@ export default {
       Cesium.Ion.defaultAccessToken =
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3ZDJjNGEzNy02MWY0LTQzNWItYTY1My00OGRiMWYxNmUxYWYiLCJpZCI6MzcxMTEsImlhdCI6MTYwNDU1ODQ0M30.OY4BQrSOy5iz0Rubg3NNfzUXKN1fSHc8_ilgxQQGCwI'
       // var widget = new Cesium.CesiumWidget('cesiumContainer');
-      this.$data.viewer = new Cesium.Viewer('cesiumContainer')
+      this.$data.viewer = new Cesium.Viewer('cesiumContainer', {
+        orderIndependentTranslucency: false,
+        contextOptions: {
+            webgl: {
+                alpha: true,
+            }
+        },
+      })
       let viewer = this.$data.viewer
       let scene = viewer.scene
       // viewer.scene.globe.enableLighting = true
@@ -105,13 +115,17 @@ export default {
       viewer.cesiumWidget.creditContainer.style.display = 'none' //隐藏ceisum标识
       viewer.scene.camera.setView({
         // 初始化相机经纬度
-        destination : new Cesium.Cartesian3.fromDegrees(116.20, 39.56, 10000000),
+        destination: new Cesium.Cartesian3.fromDegrees(116.2, 39.56, 25000000),
         orientation: {
-            heading : Cesium.Math.toRadians(0.0),
-            pitch : Cesium.Math.toRadians(-90.0),//从上往下看为-90
-            roll : 0
-        }
-    })
+          heading: Cesium.Math.toRadians(0.0),
+          pitch: Cesium.Math.toRadians(-90.0), //从上往下看为-90
+          roll: 0,
+        },
+      })
+      // 设置背景
+      viewer.scene.skyBox.show = false
+      viewer.scene.backgroundColor = new Cesium.Color(0.0, 0.0, 0.0, 0.0)
+
       var frame = viewer.infoBox.frame
 
       frame.addEventListener(
@@ -322,7 +336,7 @@ export default {
 
 <style scoped>
 @import url(/bucket.css);
-@import url("../../static/main.css");
+@import url('../../static/main.css');
 </style>
 <style lang="scss" scoped>
 html,
@@ -333,5 +347,9 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden;
+  background-image: url("../../static/images/skybox.jpg");
+  background-repeat:no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 </style>
