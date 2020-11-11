@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="background-image"></div>
     <div class="c-box bg-box">
       <div class="login-box clearfix"
            style="margin-top:10px">
@@ -48,8 +49,7 @@
           </form>
           <p class="form-p">
             没有帐号？
-            <router-link :to="'/register/'"
-                         target="_blank">[立即注册]</router-link>
+            <router-link :to="'/register/'">[立即注册]</router-link>
             {{ this.$store.state.count }}
           </p>
         </div>
@@ -124,7 +124,13 @@ export default {
 </script>
 
 <style scoped>
-body {
+.background-image {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -10;
   background-image: url('../../static/images/webview.jpg');
   background-repeat: no-repeat;
   background-position: bottom center;

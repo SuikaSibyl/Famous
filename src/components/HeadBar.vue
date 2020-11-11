@@ -110,6 +110,7 @@ export default {
       cookie.delCookie('name')
       this.IsLog = false
       this.$message('用户已退出登录')
+      this.$router.push({ name: 'Home' })
       store.commit('exit')
     },
   },
