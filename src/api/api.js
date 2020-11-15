@@ -103,11 +103,11 @@ export const peopleByYear = (params) => {
 
 async function upload(params) {
     console.log("params", params);
-    return Vue.prototype.$axios.post(`${host}/upload/`, params);
+    return await Vue.prototype.$axios.post(`${host}/upload/`, params);
 }
 //传入图片名称，去进行搜索，能够得到对应人物id信息
 async function searchpeoplepic(index) {
-    return Vue.prototype.$axios.get(
+    return await Vue.prototype.$axios.get(
         `${host}/peoplesearchheadimage/?index=` + index
     );
 }
